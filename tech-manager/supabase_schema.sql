@@ -9,6 +9,7 @@ create table profiles (
   username text unique,
   full_name text,
   avatar_url text,
+  email text,
   role text default 'technician' check (role in ('admin', 'technician')),
   constraint username_length check (char_length(username) >= 3)
 );
@@ -34,7 +35,7 @@ create table service_orders (
   date timestamp with time zone not null,
   status text not null default 'pending' check (status in ('pending', 'in-progress', 'completed', 'cancelled')),
   location jsonb, -- { lat: number, lng: number, address: string }
-  assigned_technician_id uuid references profiles(id),
+  assigned_technician_id uuid references profiles(id) on delete set null,
   created_by uuid references auth.users(id)
 );
 
@@ -71,8 +72,13 @@ create policy "Technicians can update status of assigned orders." on service_ord
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, full_name, role)
-  values (new.id, new.raw_user_meta_data->>'full_name', coalesce(new.raw_user_meta_data->>'role', 'technician'));
+  insert into public.profiles (id, full_name, email, role)
+  values (
+    new.id, 
+    new.raw_user_meta_data->>'full_name', 
+    new.email, 
+    coalesce(new.raw_user_meta_data->>'role', 'technician')
+  );
   return new;
 end;
 $$ language plpgsql security definer;
