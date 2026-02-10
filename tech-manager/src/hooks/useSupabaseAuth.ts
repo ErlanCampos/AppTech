@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAppStore } from '../store/useAppStore';
 import type { User } from '../types';
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 function buildUserFromSession(session: { user: { id: string; email?: string; user_metadata?: Record<string, string> } }): User {
     const authUser = session.user;
@@ -45,7 +46,7 @@ export function useSupabaseAuth() {
 
         // 1. Listen for auth state changes (login, logout, token refresh)
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            async (event, session) => {
+            async (event: AuthChangeEvent, session: Session | null) => {
                 if (!isMounted) return;
 
                 if (session?.user) {

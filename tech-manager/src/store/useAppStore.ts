@@ -41,7 +41,7 @@ export const useAppStore = create<AppState>((set, get) => ({
                 .select('*');
 
             if (profiles) {
-                const mappedUsers: User[] = profiles.map(p => ({
+                const mappedUsers: User[] = profiles.map((p: Record<string, string>) => ({
                     id: p.id,
                     name: p.full_name || 'Desconhecido',
                     email: p.email || '',
@@ -58,7 +58,7 @@ export const useAppStore = create<AppState>((set, get) => ({
                 .order('created_at', { ascending: false });
 
             if (orders) {
-                const mappedOrders: ServiceOrder[] = orders.map(o => ({
+                const mappedOrders: ServiceOrder[] = orders.map((o: Record<string, unknown>) => ({
                     id: o.id,
                     title: o.title,
                     description: o.description,
