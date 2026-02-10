@@ -87,15 +87,17 @@ export const MapView = () => {
     const { serviceOrders, currentUser, users } = useAppStore();
     const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
 
-    if (!currentUser) return null;
+    const relevantOrders = useMemo(() => {
+        if (!currentUser) return [];
+        return currentUser.role === 'admin'
+            ? serviceOrders
+            : serviceOrders.filter(os => os.assignedTechnicianId === currentUser.id);
+    }, [serviceOrders, currentUser]);
 
-    const relevantOrders = currentUser.role === 'admin'
-        ? serviceOrders
-        : serviceOrders.filter(os => os.assignedTechnicianId === currentUser.id);
-
-    const filteredOrders = activeFilter === 'all'
+    const filteredOrders = useMemo(() => activeFilter === 'all'
         ? relevantOrders
-        : relevantOrders.filter(os => os.status === activeFilter);
+        : relevantOrders.filter(os => os.status === activeFilter),
+        [relevantOrders, activeFilter]);
 
     const stats = useMemo(() => ({
         total: relevantOrders.length,
@@ -110,6 +112,8 @@ export const MapView = () => {
         completed: createPinIcon(STATUS_PIN_COLORS.completed),
         cancelled: createPinIcon(STATUS_PIN_COLORS.cancelled),
     }), []);
+
+    if (!currentUser) return null;
 
     const defaultCenter = relevantOrders.length > 0
         ? { lat: relevantOrders[0].location.lat, lng: relevantOrders[0].location.lng }

@@ -58,8 +58,8 @@ export const Login = () => {
                 setIsLogin(true);
                 setPassword('');
             }
-        } catch (err: any) {
-            const msg = err.message || 'Ocorreu um erro na autenticação';
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : 'Ocorreu um erro na autenticação';
             if (msg.includes('User already registered')) {
                 setError('Este email já está cadastrado. Faça login.');
             } else if (msg.includes('Invalid login credentials')) {

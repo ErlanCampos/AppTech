@@ -140,13 +140,13 @@ export const Orders = () => {
         return () => document.removeEventListener('mousedown', handler);
     }, []);
 
-    const handleCreate = (e: React.FormEvent) => {
+    const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!coords) {
             setGeoError('Busque o endereço ou clique no mapa para definir a localização.');
             return;
         }
-        addServiceOrder({
+        await addServiceOrder({
             title,
             description,
             location: { address, lat: coords.lat, lng: coords.lng },

@@ -78,8 +78,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     },
 
     logout: async () => {
-        await supabase.auth.signOut();
-        set({ currentUser: null });
+        // Always clear state first so the UI responds immediately
+        set({ currentUser: null, users: [], serviceOrders: [] });
+        try {
+            await supabase.auth.signOut();
+        } catch {
+            // signOut may fail with expired tokens — that's OK, state is already cleared
+        }
     },
 
     addServiceOrder: async (os) => {

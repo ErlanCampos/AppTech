@@ -75,8 +75,8 @@ export const Technicians = () => {
                 setShowCreateForm(false);
                 setFormSuccess('');
             }, 2000);
-        } catch (err: any) {
-            setFormError(err.message || 'Erro ao criar técnico');
+        } catch (err: unknown) {
+            setFormError(err instanceof Error ? err.message : 'Erro ao criar técnico');
         } finally {
             setFormLoading(false);
         }
@@ -87,8 +87,8 @@ export const Technicians = () => {
         try {
             await deleteTechnician(userId);
             setDeleteTarget(null);
-        } catch (err: any) {
-            alert(err.message || 'Erro ao excluir técnico');
+        } catch (err: unknown) {
+            alert(err instanceof Error ? err.message : 'Erro ao excluir técnico');
         } finally {
             setDeleteLoading(false);
         }
