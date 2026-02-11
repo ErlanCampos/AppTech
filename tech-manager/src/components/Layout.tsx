@@ -88,7 +88,7 @@ export const Layout = () => {
                             <div className="p-2 bg-gradient-to-br from-emerald-800 to-stone-800 dark:from-emerald-600 dark:to-stone-900 rounded-lg mr-3 shadow-lg">
                                 <LayoutDashboard className="w-5 h-5 text-white" />
                             </div>
-                            TechManager
+                            MA Printer Solutions
                         </h1>
                         <button
                             onClick={closeSidebar}
@@ -175,7 +175,7 @@ export const Layout = () => {
                     >
                         <Menu className="w-5 h-5" />
                     </button>
-                    <h1 className="ml-3 text-lg font-bold text-emerald-950 dark:text-emerald-500 tracking-tight">TechManager</h1>
+                    <h1 className="ml-3 text-lg font-bold text-emerald-950 dark:text-emerald-500 tracking-tight">MA Printer Solutions</h1>
                 </div>
 
                 {/* Background Pattern */}
