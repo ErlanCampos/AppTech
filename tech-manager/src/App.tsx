@@ -1,9 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Login } from './pages/Login';
-import { useSupabaseAuth } from './hooks/useSupabaseAuth';
+import { useSupabaseAuth } from './hooks/useAuth';
 
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const Technicians = lazy(() => import('./pages/Technicians').then(m => ({ default: m.Technicians })));
@@ -30,6 +30,18 @@ const FullScreenLoader = () => (
 function App() {
   const { isLoading } = useSupabaseAuth();
   const currentUser = useAppStore(state => state.currentUser);
+
+  // Limpar dados mock antigos do localStorage uma vez
+  useEffect(() => {
+    const mockKeys = ['tech_manager_users', 'tech_manager_orders', 'tech_manager_session'];
+    const cleanupFlag = 'supabase_migration_cleanup_done';
+
+    if (!localStorage.getItem(cleanupFlag)) {
+      mockKeys.forEach(key => localStorage.removeItem(key));
+      localStorage.setItem(cleanupFlag, 'true');
+      console.log('✅ Cleaned up old mock data from localStorage');
+    }
+  }, []);
 
   if (isLoading) {
     return <FullScreenLoader />;

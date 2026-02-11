@@ -66,8 +66,8 @@ export const Technicians = () => {
         setFormSuccess('');
 
         try {
-            await createTechnician(newEmail.trim(), newPassword, newName.trim());
-            setFormSuccess(`Técnico "${newName}" criado com sucesso!`);
+            await createTechnician(newName.trim(), newEmail.trim(), newPassword.trim());
+            setFormSuccess('Técnico criado com sucesso!');
             setNewName('');
             setNewEmail('');
             setNewPassword('');
@@ -76,7 +76,8 @@ export const Technicians = () => {
                 setFormSuccess('');
             }, 2000);
         } catch (err: unknown) {
-            setFormError(err instanceof Error ? err.message : 'Erro ao criar técnico');
+            const msg = err instanceof Error ? err.message : 'Erro ao criar técnico';
+            setFormError(msg);
         } finally {
             setFormLoading(false);
         }

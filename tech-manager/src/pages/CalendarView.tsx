@@ -46,6 +46,9 @@ export const CalendarView = () => {
     const { serviceOrders, currentUser } = useAppStore();
     const [selectedEvent, setSelectedEvent] = useState<ServiceOrder | null>(null);
     const [currentView, setCurrentView] = useState<View>('month');
+    const [date, setDate] = useState(new Date());
+
+    const onNavigate = useCallback((newDate: Date) => setDate(newDate), []);
 
     const relevantOrders = useMemo(() => {
         if (!currentUser) return [];
@@ -53,6 +56,8 @@ export const CalendarView = () => {
             ? serviceOrders
             : serviceOrders.filter(os => os.assignedTechnicianId === currentUser.id);
     }, [serviceOrders, currentUser]);
+
+
 
     const events = useMemo(() => {
         return relevantOrders.map(os => {
@@ -159,7 +164,8 @@ export const CalendarView = () => {
                         views={['month', 'week', 'day', 'agenda']}
                         view={currentView}
                         onView={handleViewChange}
-                        defaultView="month"
+                        date={date}
+                        onNavigate={onNavigate}
                         culture="pt-BR"
                         messages={messages}
                         onSelectEvent={handleSelectEvent}

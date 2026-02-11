@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Wrench, Lock, Mail, User as UserIcon, Loader2 } from 'lucide-react';
 
 import { supabase } from '../lib/supabase';
+import { authService } from '../services/authService';
 
 export const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -28,15 +29,30 @@ export const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
-        setMessage('');
+        setMessage(''); // Reset message
+
+        if (!email || !password) {
+            setError('Por favor, preencha todos os campos');
+            setIsLoading(false);
+            return;
+        }
 
         try {
             if (isLogin) {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email: email.trim(),
-                    password,
-                });
-                if (error) throw error;
+                // Updated login logic using authService
+                const { user, error: authError } = await authService.signIn(email, password);
+
+                if (authError || !user) {
+                    setError(authError || 'Erro ao fazer login');
+                    return;
+                }
+
+                // Atualizar o store imediatamente antes de navegar
+                useAppStore.getState().setUser(user);
+
+                // Navegar imediatamente para o dashboard
+                setMessage('Login efetuado com sucesso!');
+                navigate('/dashboard');
             } else {
                 const { data, error } = await supabase.auth.signUp({
                     email: email.trim(),
@@ -97,7 +113,7 @@ export const Login = () => {
                     {isLogin ? 'Faça login para gerenciar suas operações' : 'Preencha os dados para começar'}
                 </p>
 
-                <form onSubmit={handleAuth} className="space-y-5">
+                <form onSubmit={handleAuth} className="space-y-5" autoComplete="off">
                     {!isLogin && (
                         <>
                             <div>
@@ -142,6 +158,7 @@ export const Login = () => {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="new-password"
                                 className="w-full pl-10 pr-4 py-3 bg-stone-950/50 border border-stone-800 rounded-xl text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
                                 placeholder="••••••••"
                                 required

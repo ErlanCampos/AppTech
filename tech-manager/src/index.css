@@ -5,7 +5,16 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.dark,
+.dark body {
+  color: #e7e5e4;
 }
 
 /* Animations */

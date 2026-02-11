@@ -33,15 +33,19 @@ const NavItem = ({ to, icon: Icon, label, onClick }: { to: string, icon: any, la
 );
 
 export const Layout = () => {
-    const { currentUser, logout, theme, toggleTheme } = useAppStore();
+    const { currentUser, logout, theme, toggleTheme, fetchData } = useAppStore();
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         if (!currentUser) {
             navigate('/login');
+        } else {
+            // Carregar dados assim que o usuário estiver autenticado e o layout montar
+            console.log('Layout montado: Iniciando fetchData...');
+            fetchData();
         }
-    }, [currentUser, navigate]);
+    }, [currentUser, navigate, fetchData]);
 
     useEffect(() => {
         const root = window.document.documentElement;

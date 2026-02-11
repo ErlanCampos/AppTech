@@ -81,7 +81,7 @@ begin
   );
   return new;
 end;
-$$ language plpgsql security definer;
+$$ language plpgsql security definer set search_path = public;
 
 -- Trigger the function every time a user is created
 create trigger on_auth_user_created

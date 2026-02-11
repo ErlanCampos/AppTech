@@ -433,15 +433,15 @@ export const Orders = () => {
 
                                     <div className="flex flex-wrap gap-3 text-sm">
                                         <span className="flex items-center text-stone-500 dark:text-stone-500 bg-stone-50 dark:bg-stone-950/50 px-2.5 py-1.5 rounded-lg border border-stone-100 dark:border-stone-800">
-                                            <CalendarIcon className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-600" />
+                                            <CalendarIcon className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-400" />
                                             {format(new Date(os.date), "dd/MM/yyyy 'às' HH:mm")}
                                         </span>
                                         <span className="flex items-center text-stone-500 dark:text-stone-500 bg-stone-50 dark:bg-stone-950/50 px-2.5 py-1.5 rounded-lg border border-stone-100 dark:border-stone-800">
-                                            <MapPin className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-600" />
+                                            <MapPin className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-400" />
                                             {os.location.address}
                                         </span>
                                         <span className="flex items-center text-stone-500 dark:text-stone-500 bg-stone-50 dark:bg-stone-950/50 px-2.5 py-1.5 rounded-lg border border-stone-100 dark:border-stone-800">
-                                            <Users className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-600" />
+                                            <Users className="w-3.5 h-3.5 mr-2 text-stone-400 dark:text-stone-400" />
                                             {getTechName(os.assignedTechnicianId)}
                                         </span>
                                     </div>
@@ -451,7 +451,7 @@ export const Orders = () => {
                                 <div className="flex flex-col gap-3 min-w-[200px] w-full md:w-auto border-t md:border-t-0 md:border-l border-stone-100 dark:border-stone-800 pt-4 md:pt-0 md:pl-5">
                                     {/* Assign technician */}
                                     <div>
-                                        <span className="text-[0.65rem] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-widest">Técnico</span>
+                                        <span className="text-[0.65rem] font-bold text-stone-400 dark:text-stone-400 uppercase tracking-widest">Técnico</span>
                                         <select
                                             className="w-full mt-1 bg-stone-50 dark:bg-stone-950/50 border border-stone-200 dark:border-stone-800 rounded-lg px-3 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
                                             value={os.assignedTechnicianId || ""}
@@ -466,7 +466,7 @@ export const Orders = () => {
 
                                     {/* Update status */}
                                     <div>
-                                        <span className="text-[0.65rem] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-widest">Status</span>
+                                        <span className="text-[0.65rem] font-bold text-stone-400 dark:text-stone-400 uppercase tracking-widest">Status</span>
                                         <select
                                             className="w-full mt-1 bg-stone-50 dark:bg-stone-950/50 border border-stone-200 dark:border-stone-800 rounded-lg px-3 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
                                             value={os.status}
@@ -528,7 +528,7 @@ export const Orders = () => {
                 {filteredOrders.length === 0 && (
                     <div className="text-center py-16 bg-stone-50 dark:bg-stone-950/20 rounded-2xl border border-dashed border-stone-300 dark:border-stone-800">
                         <div className="mx-auto w-12 h-12 bg-white dark:bg-stone-900 rounded-full flex items-center justify-center shadow-sm mb-4">
-                            <ClipboardList className="w-6 h-6 text-stone-300 dark:text-stone-600" />
+                            <ClipboardList className="w-6 h-6 text-stone-300 dark:text-stone-400" />
                         </div>
                         <h3 className="text-lg font-bold text-stone-700 dark:text-stone-300">
                             {activeFilter === 'all' ? 'Nenhuma ordem de serviço' : `Nenhuma ordem "${getStatusText(activeFilter as ServiceOrderStatus)}"`}

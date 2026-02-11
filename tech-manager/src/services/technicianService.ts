@@ -1,43 +1,51 @@
 import { supabase } from '../lib/supabase';
-
-const EDGE_FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-users`;
+import type { User } from '../types';
 
 export const technicianService = {
-    async create(email: string, password: string, fullName: string): Promise<void> {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) throw new Error('Não autenticado');
+    async createTechnician(name: string, email: string, password: string): Promise<void> {
+        const cleanEmail = email.trim();
+        const cleanName = name.trim();
+        const cleanPassword = password.trim();
 
-        const res = await fetch(EDGE_FUNCTION_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`,
-            },
-            body: JSON.stringify({ email, password, full_name: fullName }),
+        if (!cleanEmail || !cleanEmail.includes('@')) {
+            throw new Error('Email inválido');
+        }
+
+        if (cleanPassword.length < 6) {
+            throw new Error('A senha deve ter pelo menos 6 caracteres');
+        }
+
+        // Criar usuário no Auth do Supabase
+        const { data, error: signUpError } = await supabase.auth.signUp({
+            email: cleanEmail,
+            password: cleanPassword,
+            options: {
+                data: {
+                    full_name: cleanName,
+                    role: 'technician'
+                }
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) {
-            throw new Error(data.error || 'Erro ao criar técnico');
+        if (signUpError) {
+            console.error('Error creating technician:', signUpError);
+            throw signUpError;
         }
+
+        // O trigger handle_new_user criará automaticamente o registro em public.users
+        console.log('Technician created:', data.user?.id);
     },
 
-    async delete(userId: string): Promise<void> {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) throw new Error('Não autenticado');
+    async deleteTechnician(id: string): Promise<void> {
+        // Deletar usuário da tabela users (cascade deletará de auth.users via ON DELETE CASCADE)
+        const { error } = await supabase
+            .from('users')
+            .delete()
+            .eq('id', id);
 
-        const res = await fetch(EDGE_FUNCTION_URL, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`,
-            },
-            body: JSON.stringify({ user_id: userId }),
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-            throw new Error(data.error || 'Erro ao excluir técnico');
+        if (error) {
+            console.error('Error deleting technician:', error);
+            throw error;
         }
     }
 };
