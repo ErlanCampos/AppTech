@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { User } from '../types';
+
 
 export const technicianService = {
     async createTechnician(name: string, email: string, password: string): Promise<void> {
