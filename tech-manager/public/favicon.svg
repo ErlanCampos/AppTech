@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background -->
+  <rect width="100" height="100" rx="12" fill="#163529"/>
+  
+  <!-- MA mark - stylized angular logo -->
+  <!-- Left diagonal stroke of M (going up-right) -->
+  <polygon points="8,78 20,78 42,30 30,30" fill="#00E676"/>
+  <!-- Middle peak of M -->
+  <polygon points="30,30 42,30 50,52 38,52" fill="#00E676"/>
+  <!-- Right side of M / A shape -->
+  <polygon points="38,52 50,52 58,30 46,30" fill="#00E676"/>
+  <!-- Vertical right bar of A -->
+  <polygon points="58,30 70,30 92,78 80,78" fill="#00E676"/>
+  <!-- Horizontal bar of A (crossbar) -->
+  <rect x="60" y="57" width="22" height="8" rx="1" fill="#00E676"/>
+</svg>
