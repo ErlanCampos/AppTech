@@ -59,6 +59,7 @@ export function useSupabaseAuth() {
                     const { data: userData, error: userError } = await Promise.race([
                         queryPromise,
                         timeoutPromise
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ]) as any;
 
                     console.log('🔐 useAuth: Query retornou!', { userData, userError });
