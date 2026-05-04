@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { LayoutDashboard, Calendar, Map as MapIcon, LogOut, Users, ClipboardList, Moon, Sun, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Calendar, Map as MapIcon, LogOut, Users, ClipboardList, Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ const NavItem = ({ to, icon: Icon, label, onClick }: { to: string, icon: any, la
 );
 
 export const Layout = () => {
-    const { currentUser, logout, theme, toggleTheme, fetchData } = useAppStore();
+    const { currentUser, logout, fetchData } = useAppStore();
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -48,13 +48,8 @@ export const Layout = () => {
     }, [currentUser, navigate, fetchData]);
 
     useEffect(() => {
-        const root = window.document.documentElement;
-        if (theme === 'dark') {
-            root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
-        }
-    }, [theme]);
+        window.document.documentElement.classList.add('dark');
+    }, []);
 
     if (!currentUser) {
         return null;
@@ -134,24 +129,7 @@ export const Layout = () => {
                     <NavItem to="/map" icon={MapIcon} label="Mapa" onClick={closeSidebar} />
                 </nav>
 
-                <div className="p-6 border-t border-stone-100 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-900 space-y-3">
-                    <button
-                        onClick={toggleTheme}
-                        className="flex items-center w-full px-4 py-3 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-emerald-800 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 rounded-xl transition-all duration-200 group"
-                        aria-label={theme === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}
-                    >
-                        {theme === 'light' ? (
-                            <>
-                                <Moon className="w-5 h-5 mr-3 text-stone-400 dark:text-stone-500 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" />
-                                Modo Escuro
-                            </>
-                        ) : (
-                            <>
-                                <Sun className="w-5 h-5 mr-3 text-stone-400 dark:text-stone-500 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors" />
-                                Modo Claro
-                            </>
-                        )}
-                    </button>
+                <div className="p-6 border-t border-stone-800 bg-stone-900 space-y-3">
 
                     <button
                         onClick={handleLogout}
